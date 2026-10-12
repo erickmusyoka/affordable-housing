@@ -1,0 +1,5 @@
+Source: National Low Income Housing Coalition, The Gap (https://nlihc.org/gap), the state table on the page, copied on 2026-10-11 through the built-in browser (table cells read from the page, 51 rows).
+Columns as published: Extremely Low-Income Renter Households; Number of Affordable and Available Rental Homes Per 100 Extremely Low-Income Renter Households; Extremely Low-Income Renter Households with Severe Cost Burden (percent).
+The page header says "The Gap Report 2026"; it does not state the survey year on the table (NLIHC's Gap reports are built from the American Community Survey public use microdata of the latest year; check the report PDF for the exact year before relying on it).
+"Available" means not occupied by a higher-income household; our CHAS-based measure counts affordable units only, so the two differ in level by construction.
+This is a manually saved file (the site offers no data download for the table), so it is not rebuilt by a script.

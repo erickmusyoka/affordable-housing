@@ -1,0 +1,158 @@
+column,source,description,unit,reference_period,notes
+state_fips,keys,"Two-character state FIPS code, 50 states plus DC",text,Not applicable,
+year,keys,Calendar year of the row (fiscal year for HUD fiscal-year sources),year,Not applicable,
+state_abbr,keys,Two-letter state abbreviation,text,Not applicable,
+state_name,ACS,State name,text,Not applicable,
+median_gross_rent,ACS 1-year,Median gross rent,dollars per month,"Calendar-year ACS 1-year estimate, released the following September. No 2020 release",
+median_gross_rent_moe,ACS 1-year,90 percent margin of error of median_gross_rent,dollars per month,"Calendar-year ACS 1-year estimate, released the following September. No 2020 release",
+median_hh_income,ACS 1-year,Median household income,dollars per year,"Calendar-year ACS 1-year estimate, released the following September. No 2020 release",
+median_hh_income_moe,ACS 1-year,90 percent margin of error of median_hh_income,dollars per year,"Calendar-year ACS 1-year estimate, released the following September. No 2020 release",
+rb_total,ACS 1-year,"Renter households, gross rent as a percentage of income, total",households,"Calendar-year ACS 1-year estimate, released the following September. No 2020 release",Do not use rb_* counts as predictors of the burden rates (circular)
+rb_total_moe,ACS 1-year,90 percent margin of error of rb_total,households,"Calendar-year ACS 1-year estimate, released the following September. No 2020 release",
+rb_30_to_34,ACS 1-year,Renter households paying 30 to 34.9 percent of income on rent,households,"Calendar-year ACS 1-year estimate, released the following September. No 2020 release",Do not use rb_* counts as predictors of the burden rates (circular)
+rb_30_to_34_moe,ACS 1-year,90 percent margin of error of rb_30_to_34,households,"Calendar-year ACS 1-year estimate, released the following September. No 2020 release",
+rb_35_to_39,ACS 1-year,Renter households paying 35 to 39.9 percent,households,"Calendar-year ACS 1-year estimate, released the following September. No 2020 release",Do not use rb_* counts as predictors of the burden rates (circular)
+rb_35_to_39_moe,ACS 1-year,90 percent margin of error of rb_35_to_39,households,"Calendar-year ACS 1-year estimate, released the following September. No 2020 release",
+rb_40_to_49,ACS 1-year,Renter households paying 40 to 49.9 percent,households,"Calendar-year ACS 1-year estimate, released the following September. No 2020 release",Do not use rb_* counts as predictors of the burden rates (circular)
+rb_40_to_49_moe,ACS 1-year,90 percent margin of error of rb_40_to_49,households,"Calendar-year ACS 1-year estimate, released the following September. No 2020 release",
+rb_50_plus,ACS 1-year,Renter households paying 50 percent or more,households,"Calendar-year ACS 1-year estimate, released the following September. No 2020 release",Do not use rb_* counts as predictors of the burden rates (circular)
+rb_50_plus_moe,ACS 1-year,90 percent margin of error of rb_50_plus,households,"Calendar-year ACS 1-year estimate, released the following September. No 2020 release",
+rb_not_computed,ACS 1-year,Renter households with rent burden not computed,households,"Calendar-year ACS 1-year estimate, released the following September. No 2020 release",Do not use rb_* counts as predictors of the burden rates (circular)
+rb_not_computed_moe,ACS 1-year,90 percent margin of error of rb_not_computed,households,"Calendar-year ACS 1-year estimate, released the following September. No 2020 release",
+hh_total,ACS 1-year,Occupied housing units,households,"Calendar-year ACS 1-year estimate, released the following September. No 2020 release",
+hh_total_moe,ACS 1-year,90 percent margin of error of hh_total,households,"Calendar-year ACS 1-year estimate, released the following September. No 2020 release",
+hh_owner,ACS 1-year,Owner-occupied units,households,"Calendar-year ACS 1-year estimate, released the following September. No 2020 release",
+hh_owner_moe,ACS 1-year,90 percent margin of error of hh_owner,households,"Calendar-year ACS 1-year estimate, released the following September. No 2020 release",
+hh_renter,ACS 1-year,Renter-occupied units,households,"Calendar-year ACS 1-year estimate, released the following September. No 2020 release",
+hh_renter_moe,ACS 1-year,90 percent margin of error of hh_renter,households,"Calendar-year ACS 1-year estimate, released the following September. No 2020 release",
+vac_total,ACS 1-year,Vacant housing units,units,"Calendar-year ACS 1-year estimate, released the following September. No 2020 release",
+vac_total_moe,ACS 1-year,90 percent margin of error of vac_total,units,"Calendar-year ACS 1-year estimate, released the following September. No 2020 release",
+vac_for_rent,ACS 1-year,Vacant units for rent,units,"Calendar-year ACS 1-year estimate, released the following September. No 2020 release",
+vac_for_rent_moe,ACS 1-year,90 percent margin of error of vac_for_rent,units,"Calendar-year ACS 1-year estimate, released the following September. No 2020 release",
+vac_rented_not_occupied,ACS 1-year,Vacant units rented but not occupied,units,"Calendar-year ACS 1-year estimate, released the following September. No 2020 release",
+vac_rented_not_occupied_moe,ACS 1-year,90 percent margin of error of vac_rented_not_occupied,units,"Calendar-year ACS 1-year estimate, released the following September. No 2020 release",
+median_home_value,ACS 1-year,Median value of owner-occupied units,dollars,"Calendar-year ACS 1-year estimate, released the following September. No 2020 release",
+median_home_value_moe,ACS 1-year,90 percent margin of error of median_home_value,dollars,"Calendar-year ACS 1-year estimate, released the following September. No 2020 release",
+population,ACS 1-year,Total population,people,"Calendar-year ACS 1-year estimate, released the following September. No 2020 release",
+population_moe,ACS 1-year,90 percent margin of error of population,people,"Calendar-year ACS 1-year estimate, released the following September. No 2020 release",
+rent_burden_30_pct,"ACS 1-year, derived",Percent of computed renter households paying 30 percent or more of income on rent,percent,"Calendar-year ACS 1-year estimate, released the following September. No 2020 release",
+severe_rent_burden_pct,"ACS 1-year, derived",Percent of computed renter households paying 50 percent or more. PRIMARY TARGET,percent,"Calendar-year ACS 1-year estimate, released the following September. No 2020 release",
+rental_vacancy_rate_pct,"ACS 1-year, derived",Vacant for rent as a percent of renter stock (renters + for rent + rented not occupied),percent,"Calendar-year ACS 1-year estimate, released the following September. No 2020 release",
+renter_share_pct,"ACS 1-year, derived",Renter households as a percent of occupied units,percent,"Calendar-year ACS 1-year estimate, released the following September. No 2020 release",
+severe_rent_burden_pct_moe,"ACS 1-year, derived","90 percent margin of error of severe_rent_burden_pct, Census proportion formula",percentage points,"Calendar-year ACS 1-year estimate, released the following September. No 2020 release",Denominator margin included. Use as known measurement error in the Bayesian model
+rent_burden_30_pct_moe,"ACS 1-year, derived","90 percent margin of error of rent_burden_30_pct, Census proportion formula",percentage points,"Calendar-year ACS 1-year estimate, released the following September. No 2020 release",Denominator margin included. Use as known measurement error in the Bayesian model
+rental_vacancy_rate_pct_moe,"ACS 1-year, derived","90 percent margin of error of rental_vacancy_rate_pct, Census proportion formula",percentage points,"Calendar-year ACS 1-year estimate, released the following September. No 2020 release",Denominator margin included. Use as known measurement error in the Bayesian model
+renter_share_pct_moe,"ACS 1-year, derived","90 percent margin of error of renter_share_pct, Census proportion formula",percentage points,"Calendar-year ACS 1-year estimate, released the following September. No 2020 release",Denominator margin included. Use as known measurement error in the Bayesian model
+permits_1unit,Census BPS,"Permitted housing units, permits_1unit",units,Calendar year (December year-to-date). 2024 and 2025 are provisional,Main columns including imputation for non-reporting places. Multifamily is 5 or more units
+permits_2unit,Census BPS,"Permitted housing units, permits_2unit",units,Calendar year (December year-to-date). 2024 and 2025 are provisional,Main columns including imputation for non-reporting places. Multifamily is 5 or more units
+permits_3_4unit,Census BPS,"Permitted housing units, permits_3_4unit",units,Calendar year (December year-to-date). 2024 and 2025 are provisional,Main columns including imputation for non-reporting places. Multifamily is 5 or more units
+permits_5plus,Census BPS,"Permitted housing units, permits_5plus",units,Calendar year (December year-to-date). 2024 and 2025 are provisional,Main columns including imputation for non-reporting places. Multifamily is 5 or more units
+permits_5plus_bldgs,Census BPS,Permitted buildings with 5 or more units,buildings,Calendar year (December year-to-date). 2024 and 2025 are provisional,
+permits_total,Census BPS,"Permitted housing units, permits_total",units,Calendar year (December year-to-date). 2024 and 2025 are provisional,Main columns including imputation for non-reporting places. Multifamily is 5 or more units
+is_provisional,Census BPS,"1 for the two most recent permit years, which Census revises",0/1,Calendar year (December year-to-date). 2024 and 2025 are provisional,
+pit_overall,HUD AHAR PIT,Overall homeless people,people,One night in January of the year,
+pit_sheltered,HUD AHAR PIT,Sheltered homeless people,people,One night in January of the year,
+pit_unsheltered,HUD AHAR PIT,Unsheltered homeless people,people,One night in January of the year,
+pit_chronic_people,HUD AHAR PIT,Chronically homeless people (2011 onward only),people,One night in January of the year,Chronic people (2011 on) and chronic individuals are different definitions; do not splice
+pit_chronic_individuals,HUD AHAR PIT,Chronically homeless individuals (all years),people,One night in January of the year,Chronic people (2011 on) and chronic individuals are different definitions; do not splice
+pit_people_in_families,HUD AHAR PIT,Homeless people in families with children,people,One night in January of the year,
+pit_family_households,HUD AHAR PIT,Homeless family households,people,One night in January of the year,
+pit_unaccompanied_youth,HUD AHAR PIT,Unaccompanied homeless youth under 25 (2015 onward),people,One night in January of the year,
+unsheltered_incomplete,HUD AHAR PIT,"1 when unsheltered counts are known incomplete: all states in 2021, nine states in 2024",0/1,One night in January of the year,
+chronic_people_defined,HUD AHAR PIT,"1 from 2011, when the chronic homeless people series exists",0/1,One night in January of the year,
+hic_beds_total_es_th_sh,HUD AHAR HIC,"Year-round beds, emergency shelter + transitional + safe haven (recomputed)",beds,One night in January of the year,
+hic_beds_es,HUD AHAR HIC,Emergency shelter beds,beds,One night in January of the year,
+hic_beds_th,HUD AHAR HIC,Transitional housing beds,beds,One night in January of the year,
+hic_beds_sh,HUD AHAR HIC,Safe haven beds (missing in 2007),beds,One night in January of the year,
+hic_beds_rrh,HUD AHAR HIC,Rapid re-housing beds (missing before 2013),beds,One night in January of the year,
+hic_beds_psh,HUD AHAR HIC,Permanent supportive housing beds,beds,One night in January of the year,
+hic_beds_oph,HUD AHAR HIC,Other permanent housing beds (missing before 2014),beds,One night in January of the year,
+fmr_n_areas,HUD FMR,Number of FMR areas in the state,count,"HUD fiscal year, which starts October 1 of the previous calendar year. Effective date not recorded",
+fmr_pop_total,HUD FMR,Sum of the file's own county population column,people,"HUD fiscal year, which starts October 1 of the previous calendar year. Effective date not recorded",Vintage in fmr_pop_vintage
+fmr_0br,HUD FMR,"Fair Market Rent, fmr_0br, population-weighted state mean of areas",dollars per month,"HUD fiscal year, which starts October 1 of the previous calendar year. Effective date not recorded","Partly derived from ACS rents: a policy benchmark, not a co-predictor with ACS rent"
+fmr_1br,HUD FMR,"Fair Market Rent, fmr_1br, population-weighted state mean of areas",dollars per month,"HUD fiscal year, which starts October 1 of the previous calendar year. Effective date not recorded","Partly derived from ACS rents: a policy benchmark, not a co-predictor with ACS rent"
+fmr_2br,HUD FMR,"Fair Market Rent, fmr_2br, population-weighted state mean of areas",dollars per month,"HUD fiscal year, which starts October 1 of the previous calendar year. Effective date not recorded","Partly derived from ACS rents: a policy benchmark, not a co-predictor with ACS rent"
+fmr_3br,HUD FMR,"Fair Market Rent, fmr_3br, population-weighted state mean of areas",dollars per month,"HUD fiscal year, which starts October 1 of the previous calendar year. Effective date not recorded","Partly derived from ACS rents: a policy benchmark, not a co-predictor with ACS rent"
+fmr_4br,HUD FMR,"Fair Market Rent, fmr_4br, population-weighted state mean of areas",dollars per month,"HUD fiscal year, which starts October 1 of the previous calendar year. Effective date not recorded","Partly derived from ACS rents: a policy benchmark, not a co-predictor with ACS rent"
+fmr_pop_vintage,HUD FMR,Year of the population column used for weights,year,"HUD fiscal year, which starts October 1 of the previous calendar year. Effective date not recorded",
+il_n_areas,HUD Income Limits,Number of areas in the state,count,HUD fiscal year. Built from ACS data of earlier years,
+il_matched_pop_share,HUD Income Limits,Share of state population matched to an FMR weight,share 0 to 1,HUD fiscal year. Built from ACS data of earlier years,
+hud_median_family_income,HUD Income Limits,"HUD area median family income, population-weighted state mean",dollars per year,HUD fiscal year. Built from ACS data of earlier years,Built from ACS: do not use beside ACS median household income as a separate predictor
+il_50pct_4p,HUD Income Limits,"Very low income limit (50 percent), 4-person household",dollars per year,HUD fiscal year. Built from ACS data of earlier years,
+il_80pct_4p,HUD Income Limits,"Low income limit (80 percent), 4-person household",dollars per year,HUD fiscal year. Built from ACS data of earlier years,
+il_30pct_4p,HUD Income Limits,"30 percent limit, 4-person household, FY2010 to FY2013 only",dollars per year,HUD fiscal year. Built from ACS data of earlier years,Not comparable with il_eli_4p
+il_eli_4p,HUD Income Limits,"Extremely low income limit, 4-person household, FY2014 onward",dollars per year,HUD fiscal year. Built from ACS data of earlier years,Level jumps between FY2013 and FY2014 because the definition changed
+psh_total_units,HUD Picture of Subsidized Households,"HUD-assisted units, summary of all HUD programs (excludes LIHTC)",see description,"Year of release. Reference date is 31 December from 2015, unknown before",Program taxonomy changed in 2014: see psh_taxonomy_break
+psh_total_occupied,HUD Picture of Subsidized Households,Occupied assisted units (2025 only),see description,"Year of release. Reference date is 31 December from 2015, unknown before",
+psh_pct_occupied,HUD Picture of Subsidized Households,Percent of assisted units occupied,see description,"Year of release. Reference date is 31 December from 2015, unknown before",
+psh_number_reported,HUD Picture of Subsidized Households,Assisted units reported,see description,"Year of release. Reference date is 31 December from 2015, unknown before",
+psh_people_total,HUD Picture of Subsidized Households,People in assisted units,see description,"Year of release. Reference date is 31 December from 2015, unknown before",
+psh_rent_per_month,HUD Picture of Subsidized Households,Average tenant rent,see description,"Year of release. Reference date is 31 December from 2015, unknown before",
+psh_spending_per_month,HUD Picture of Subsidized Households,Average HUD spending per unit,see description,"Year of release. Reference date is 31 December from 2015, unknown before",
+psh_hh_income,HUD Picture of Subsidized Households,Average annual household income of assisted households,see description,"Year of release. Reference date is 31 December from 2015, unknown before",
+psh_pct_lt30_median,HUD Picture of Subsidized Households,Percent of assisted households below 30 percent of area median income,see description,"Year of release. Reference date is 31 December from 2015, unknown before",
+psh_pct_lt50_median,HUD Picture of Subsidized Households,Percent below 50 percent of area median income,see description,"Year of release. Reference date is 31 December from 2015, unknown before",
+psh_months_waiting,HUD Picture of Subsidized Households,Average months on the waiting list,see description,"Year of release. Reference date is 31 December from 2015, unknown before",
+psh_reference_date,HUD Picture of Subsidized Households,Reference date given in the file,date,"Year of release. Reference date is 31 December from 2015, unknown before",
+psh_taxonomy_break,HUD Picture of Subsidized Households,"0 for 2009 to 2013, 1 from 2014 (program categories changed; national total fell 2.9 percent)",0/1,"Year of release. Reference date is 31 December from 2015, unknown before",
+lihtc_projects_placed,HUD LIHTC,"LIHTC lihtc_projects_placed: projects, units, or low-income units placed in service in the year",count,Cumulative or placed through the placed-in-service year. 2023 and 2024 look incomplete,Same underlying projects as NHPD LIHTC records: do not use both as separate predictors
+lihtc_units_placed,HUD LIHTC,"LIHTC lihtc_units_placed: projects, units, or low-income units placed in service in the year",count,Cumulative or placed through the placed-in-service year. 2023 and 2024 look incomplete,Same underlying projects as NHPD LIHTC records: do not use both as separate predictors
+lihtc_li_units_placed,HUD LIHTC,"LIHTC lihtc_li_units_placed: projects, units, or low-income units placed in service in the year",count,Cumulative or placed through the placed-in-service year. 2023 and 2024 look incomplete,Same underlying projects as NHPD LIHTC records: do not use both as separate predictors
+lihtc_projects_cum,HUD LIHTC,Cumulative lihtc_projects_cum placed in service since 1987,count,Cumulative or placed through the placed-in-service year. 2023 and 2024 look incomplete,Includes projects no longer monitored; current monitoring status is not applied to past years
+lihtc_units_cum,HUD LIHTC,Cumulative lihtc_units_cum placed in service since 1987,count,Cumulative or placed through the placed-in-service year. 2023 and 2024 look incomplete,Includes projects no longer monitored; current monitoring status is not applied to past years
+lihtc_li_units_cum,HUD LIHTC,Cumulative lihtc_li_units_cum placed in service since 1987,count,Cumulative or placed through the placed-in-service year. 2023 and 2024 look incomplete,Includes projects no longer monitored; current monitoring status is not applied to past years
+lihtc_recent_incomplete,HUD LIHTC,"1 for 2023 and 2024, placement years that look incomplete",0/1,Cumulative or placed through the placed-in-service year. 2023 and 2024 look incomplete,
+chas_vintage,HUD CHAS,CHAS vintage on this row,text,"Five-year ACS window. Panel year is the window end year. Present on 2014, 2019, 2022 only",
+chas_start_year,HUD CHAS,First or last year of the five-year window,year,"Five-year ACS window. Panel year is the window end year. Present on 2014, 2019, 2022 only",
+chas_end_year,HUD CHAS,First or last year of the five-year window,year,"Five-year ACS window. Panel year is the window end year. Present on 2014, 2019, 2022 only",
+overlaps_previous_vintage,HUD CHAS,"1 for 2018-2022, which shares 2018 and 2019 with 2015-2019",0/1,"Five-year ACS window. Panel year is the window end year. Present on 2014, 2019, 2022 only",
+chas_renters_le50,HUD CHAS,Renter households at or below 50 percent of HAMFI,households,"Five-year ACS window. Panel year is the window end year. Present on 2014, 2019, 2022 only",
+chas_severe_burden_pct_le50,HUD CHAS,Percent of computed renters in the band paying over 50 percent of income (le50),percent,"Five-year ACS window. Panel year is the window end year. Present on 2014, 2019, 2022 only","Four snapshots: use for ranking, AHNI, validation, not panel regression"
+chas_burden30_pct_le50,HUD CHAS,Percent of computed renters in the band paying over 30 percent of income (le50),percent,"Five-year ACS window. Panel year is the window end year. Present on 2014, 2019, 2022 only",
+chas_affordable_units_per100_eli,HUD CHAS,Units with rent affordable to extremely low income households per 100 such renter households,units per 100,"Five-year ACS window. Panel year is the window end year. Present on 2014, 2019, 2022 only","Affordable units, not affordable and available units"
+chas_affordable_units_per100_le50,HUD CHAS,Units affordable at 50 percent HAMFI or below per 100 renter households at or below 50 percent,units per 100,"Five-year ACS window. Panel year is the window end year. Present on 2014, 2019, 2022 only",
+chas_eli_in_affordable_pct_of_eli,HUD CHAS,"Extremely low income renters living in units affordable to them, percent of such renters",percent,"Five-year ACS window. Panel year is the window end year. Present on 2014, 2019, 2022 only",
+chas_severe_burden_pct_le30,HUD CHAS,Percent of computed renters in the band paying over 50 percent of income (le30),percent,"Five-year ACS window. Panel year is the window end year. Present on 2014, 2019, 2022 only","Four snapshots: use for ranking, AHNI, validation, not panel regression"
+chas_burden30_pct_le30,HUD CHAS,Percent of computed renters in the band paying over 30 percent of income (le30),percent,"Five-year ACS window. Panel year is the window end year. Present on 2014, 2019, 2022 only",
+chas_severe_burden_pct_30_50,HUD CHAS,Percent of computed renters in the band paying over 50 percent of income (30_50),percent,"Five-year ACS window. Panel year is the window end year. Present on 2014, 2019, 2022 only","Four snapshots: use for ranking, AHNI, validation, not panel regression"
+chas_burden30_pct_30_50,HUD CHAS,Percent of computed renters in the band paying over 30 percent of income (30_50),percent,"Five-year ACS window. Panel year is the window end year. Present on 2014, 2019, 2022 only",
+chas_severe_burden_pct_50_80,HUD CHAS,Percent of computed renters in the band paying over 50 percent of income (50_80),percent,"Five-year ACS window. Panel year is the window end year. Present on 2014, 2019, 2022 only","Four snapshots: use for ranking, AHNI, validation, not panel regression"
+chas_burden30_pct_50_80,HUD CHAS,Percent of computed renters in the band paying over 30 percent of income (50_80),percent,"Five-year ACS window. Panel year is the window end year. Present on 2014, 2019, 2022 only",
+chas_severe_burden_pct_80_100,HUD CHAS,Percent of computed renters in the band paying over 50 percent of income (80_100),percent,"Five-year ACS window. Panel year is the window end year. Present on 2014, 2019, 2022 only","Four snapshots: use for ranking, AHNI, validation, not panel regression"
+chas_burden30_pct_80_100,HUD CHAS,Percent of computed renters in the band paying over 30 percent of income (80_100),percent,"Five-year ACS window. Panel year is the window end year. Present on 2014, 2019, 2022 only",
+chas_severe_burden_pct_gt100,HUD CHAS,Percent of computed renters in the band paying over 50 percent of income (gt100),percent,"Five-year ACS window. Panel year is the window end year. Present on 2014, 2019, 2022 only","Four snapshots: use for ranking, AHNI, validation, not panel regression"
+chas_burden30_pct_gt100,HUD CHAS,Percent of computed renters in the band paying over 30 percent of income (gt100),percent,"Five-year ACS window. Panel year is the window end year. Present on 2014, 2019, 2022 only",
+unemployment_rate_pct,BLS via FRED,"State unemployment rate, seasonally adjusted, annual average",percent,Calendar-year average of monthly values,
+cpi_shelter,BLS via FRED,"National CPI, shelter, annual average (same for all states)",index,Calendar-year average of monthly values,Absorbed by year effects
+cpi_rent_primary_residence,BLS via FRED,"National CPI, rent of primary residence, annual average (same for all states)",index,Calendar-year average of monthly values,Absorbed by year effects
+rpp_all_items,BEA,"Regional Price Parity, rpp_all_items (U.S. = 100); rpp_rents is services: rents",index,Calendar year,"A price level, not a growth rate. Missing for 2025"
+rpp_rents,BEA,"Regional Price Parity, rpp_rents (U.S. = 100); rpp_rents is services: rents",index,Calendar year,"A price level, not a growth rate. Missing for 2025"
+personal_income_thousands,BEA,State personal income,thousand dollars,Calendar year,
+per_capita_personal_income,BEA,Per capita personal income,dollars,Calendar year,
+population_rate_base,derived,Population used as the denominator of per-capita rates,people,Inherits the reference periods of its inputs,"ACS, except the 2020 Census count in 2020"
+population_rate_base_source,derived,Source of population_rate_base: acs_1yr or census_2020,text,Inherits the reference periods of its inputs,
+rent_growth_pct,derived,Year-over-year change in median gross rent. Uses the previous calendar year; missing if that year is missing (so 2021 is missing for ACS),percent,Inherits the reference periods of its inputs,
+income_growth_pct,derived,Year-over-year change in median household income. Uses the previous calendar year; missing if that year is missing (so 2021 is missing for ACS),percent,Inherits the reference periods of its inputs,
+renter_hh_growth_pct,derived,Year-over-year change in renter households. Uses the previous calendar year; missing if that year is missing (so 2021 is missing for ACS),percent,Inherits the reference periods of its inputs,
+population_growth_pct,derived,Year-over-year change in ACS population. Uses the previous calendar year; missing if that year is missing (so 2021 is missing for ACS),percent,Inherits the reference periods of its inputs,
+home_value_growth_pct,derived,Year-over-year change in median home value. Uses the previous calendar year; missing if that year is missing (so 2021 is missing for ACS),percent,Inherits the reference periods of its inputs,
+fmr_2br_growth_pct,derived,Year-over-year change in 2-bedroom FMR (fiscal years). Uses the previous calendar year; missing if that year is missing (so 2021 is missing for ACS),percent,Inherits the reference periods of its inputs,
+per_capita_personal_income_growth_pct,derived,Year-over-year change in per capita personal income. Uses the previous calendar year; missing if that year is missing (so 2021 is missing for ACS),percent,Inherits the reference periods of its inputs,
+cpi_rent_growth_pct,derived,Year-over-year change in national CPI rent (same for all states). Uses the previous calendar year; missing if that year is missing (so 2021 is missing for ACS),percent,Inherits the reference periods of its inputs,
+rent_income_gap_pp,derived,Rent growth minus income growth,percentage points,Inherits the reference periods of its inputs,
+unemployment_rate_change_pp,derived,Year-over-year change in the unemployment rate,percentage points,Inherits the reference periods of its inputs,
+rent_to_income_pct,derived,Annual median gross rent as a percent of median household income,percent,Inherits the reference periods of its inputs,
+income_rpp_adjusted,derived,Median household income divided by the all-items price parity,dollars per year,Inherits the reference periods of its inputs,Purchasing-power comparison across states
+fmr_2br_to_acs_rent_ratio,derived,2-bedroom FMR divided by ACS median gross rent,ratio,Inherits the reference periods of its inputs,Descriptive only: both are derived partly from ACS
+permits_per_1000_pop,derived,"Permitted units per 1,000 residents (ACS population)","units per 1,000",Inherits the reference periods of its inputs,
+permits_5plus_per_1000_pop,derived,"Permitted units in buildings of 5 or more per 1,000 residents","units per 1,000",Inherits the reference periods of its inputs,
+permits_5plus_per_1000_renter_hh,derived,"Permitted units in buildings of 5 or more per 1,000 renter households","units per 1,000",Inherits the reference periods of its inputs,
+pit_rate_per_10k,derived,"Homeless people per 10,000 residents","per 10,000",Inherits the reference periods of its inputs,Use only where unsheltered_incomplete is 0
+pit_unsheltered_rate_per_10k,derived,"Unsheltered homeless people per 10,000 residents","per 10,000",Inherits the reference periods of its inputs,Use only where unsheltered_incomplete is 0
+hic_psh_beds_per_10k,derived,"Permanent supportive housing beds per 10,000 residents","per 10,000",Inherits the reference periods of its inputs,
+hic_shelter_beds_per_10k,derived,"Emergency, transitional, and safe haven beds per 10,000 residents","per 10,000",Inherits the reference periods of its inputs,
+psh_units_per_100_renter_hh,derived,HUD-assisted units per 100 ACS renter households,units per 100,Inherits the reference periods of its inputs,
+lihtc_units_cum_per_100_renter_hh,derived,Cumulative LIHTC units placed per 100 ACS renter households,units per 100,Inherits the reference periods of its inputs,
+acs_available,flag,1 if ACS data exist for this state and year (0 for 2020 and 2025),0/1,Not applicable,
+is_2020_gap,flag,"1 for 2020, the year with no standard ACS 1-year release",0/1,Not applicable,
+is_2021_covid,flag,"1 for 2021, a COVID-affected ACS and PIT year",0/1,Not applicable,

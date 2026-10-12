@@ -1,0 +1,21 @@
+[project]
+name = "affordable-housing-analysis"
+version = "1.0.0"
+description = "Units at stake in affordable rental housing by 2035: demand scenarios, subsidy preservation models, and planning arithmetic"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "ipykernel>=7.4.0",
+    "linearmodels>=7.0",
+    "matplotlib>=3.11.2",
+    "nbclient>=0.11.0",
+    "nbformat>=5.11.1",
+    "numpy",
+    "pandas>=3.0.6",
+    "python-calamine>=0.8.2",
+    "python-dotenv>=1.2.4",
+    "requests>=2.34.2",
+    "scikit-learn>=1.9.1",
+    "scipy>=1.18.1",
+    "statsmodels>=0.15.0",
+]

@@ -1,0 +1,8 @@
+comparison,statistic,value
+ELI renter households (level),pearson,0.995259025986685
+ELI renter households (level),spearman,0.9952036199095022
+affordable units per 100 ELI renters (ours: affordable; NLIHC: affordable and available),spearman,0.7509307292756587
+affordable units per 100 ELI renters,pearson,0.8274116341212465
+severe cost burden (ours: renters at or below 50% of area median; NLIHC: ELI renters),spearman,0.7430795531377298
+our need index against NLIHC homes per 100 (expect negative),spearman,-0.5979700748095833
+our need index against NLIHC severe burden,spearman,0.6278734208683143

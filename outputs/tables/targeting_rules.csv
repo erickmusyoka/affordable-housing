@@ -1,0 +1,10 @@
+rule,share of unrescued units covered,properties to act on,share of scored properties
+largest first,0.25,548,0.048379977045996295
+largest first,0.5,1539,0.13587004502516112
+largest first,0.8,3672,0.32418116006003356
+lowest rescue chance first,0.25,8042,0.7099849916129601
+lowest rescue chance first,0.5,9753,0.8610399929372297
+lowest rescue chance first,0.8,10920,0.9640681557340867
+random,0.25,2832,0.25
+random,0.5,5664,0.5
+random,0.8,9062,0.8
