@@ -1,175 +1,185 @@
 # Affordable Rental Housing: Units at Stake by 2035
 
-> How many affordable rental units in the United States could be lost, or newly needed, by 2035; in which states; and what it would take to hold the line.
+**How many affordable rental homes could the United States need—or put at risk—by 2035? Where are those pressures greatest, and what would it take to keep pace?**
 
-| | |
+This is my independent research project on affordable rental housing demand and preservation in the United States. I brought together public housing data, demographic projections, and property-level records to look at two connected challenges: the need for additional affordable homes and the risk that some existing subsidized homes may leave their current programs.
+
+The project is intended to make complex housing data easier to examine, question, and use in planning. Its estimates are **scenarios and measures of exposure**, not a prediction that every unit identified will be lost.
+
+| At a glance | Details |
 |---|---|
-| **Answer** | **0.90 to 1.03 million units** are at stake by 2035 (885,000 to 1.05 million counting sampling error); under baseline growth, 62 to 67 percent of that is existing housing that could be lost rather than new demand |
-| **Coverage** | 50 states and DC; data from 2010 to 2025 (scenarios to 2035) |
-| **Methods** | Logistic regression, penalized logistic regression with state effects, cohort life tables, demographic projection, composite index (and, in the full study, fixed-effects panels, a Bayesian state-space model, and machine learning that did not win) |
-| **Stack** | Python 3.12+, [uv](https://docs.astral.sh/uv/), pandas, statsmodels, linearmodels, scikit-learn |
-| **Start with** | [`REPORT_SHORT.md`](REPORT_SHORT.md): the full write-up, with code, output, and figures |
+| **Main finding** | **About 0.90–1.03 million units at stake by 2035** under the baseline assumptions (approximately 885,000–1.05 million when sampling uncertainty is included). Preservation-related exposure accounts for about **62–67%** of the baseline total. |
+| **Geographic coverage** | All 50 states and Washington, DC (51 geographies). Historical source periods vary, generally spanning 2010–2025; scenarios extend to 2035. |
+| **Core methods** | Demographic stock-flow scenarios; logistic regression; ridge-penalized logistic regression with state effects; cohort life tables; a composite need index; bootstrap uncertainty. The wider study also evaluates panel econometrics, Bayesian state-space methods, and machine learning. |
+| **Technology** | Python 3.12+, [uv](https://docs.astral.sh/uv/), pandas, statsmodels, linearmodels, scikit-learn. |
+| **Full report** | [`REPORT_SHORT.md`](REPORT_SHORT.md) explains the research, methods, code, outputs, and figures in detail. |
 
-**Contents:** [Why](#why-this-project) | [Result](#headline-result) | [Quick start](#quick-start) | [Data](#data) | [Exploratory analysis](#exploratory-analysis) | [Models](#models) | [Results](#results-in-pictures) | [Try it](#try-it-in-five-minutes) | [Layout](#repository-layout) | [Checks](#reproducibility-and-checks) | [Limits](#limits) | [Next steps](#next-steps)
+**Explore the project:** [Why this project](#why-this-project) · [Headline result](#headline-result) · [Quick start](#quick-start) · [Data](#data) · [Exploratory analysis](#exploratory-analysis) · [Models](#models) · [Results in pictures](#results-in-pictures) · [Try it in five minutes](#try-it-in-five-minutes) · [Repository layout](#repository-layout) · [Reproducibility and checks](#reproducibility-and-checks) · [Limits](#limits) · [Next steps](#next-steps)
 
 ## Why this project
 
-Affordable rental housing gets scarcer through two forces. **Demand grows:** more extremely low income renter households need a home. **Supply leaks:** subsidies and rules that keep existing units affordable run out, and nobody is required to renew them. Most public counts stop at "this many units have an expiration date by 2030 or 2035". That says what is scheduled, not what will actually be lost.
+My interest in affordable housing finance has shown me how closely housing outcomes are tied to decisions made over many years: where to develop, how to structure financing, when to refinance, and how to preserve homes that are already serving lower-income renters. Those decisions depend on reliable information, but the information is spread across different datasets and programs.
 
-This project asks the harder question, using what has already happened. When a federal subsidy ended in the past, which properties got a new one? When LIHTC projects reached the end of their 30-year clock, which dropped off the state agency's list? It learns those patterns from 12,822 past lapses and 7,315 LIHTC projects, projects them onto today's expiring stock, adds the growth in need from a demographic projection, and totals the result by state.
+I started with a simple question: **What does the available evidence suggest about affordable rental housing needs and preservation exposure through 2035?**
 
-Two commitments shape everything else. **Honesty about noise:** the rent-burden series is a survey sample, and about three quarters of its year-to-year movement is sampling error, so every model is tested against "next year equals this year" on data it has not seen. **Honesty about causation:** the models say what is likely to happen, where, and how big; they do not say which intervention works. The planning arithmetic at the end is arithmetic, with no costs.
+Two forces matter here:
+
+- **More households may need affordable homes.** Changes in population, age structure, and renting behavior affect the number of extremely low-income (ELI) renters.
+- **Some existing affordable homes face program or financing transitions.** Subsidies expire, LIHTC projects reach monitoring milestones, and insured mortgages may terminate earlier than their scheduled dates. These events are not the same as confirmed losses of affordability, but they warrant attention.
+
+An expiration date alone does not tell us what happened next. I therefore examined historical outcomes: whether properties received another subsidy after their previous subsidy ended, whether LIHTC projects remained on state monitoring lists, and when certain HUD-insured mortgages terminated. The study draws on **12,822 historical subsidy-lapse events** and **7,315 LIHTC projects**, alongside demographic and housing-market data.
+
+I also wanted the research to be honest about its limits. Survey estimates can move from year to year because of sampling noise, and a model that fits historical data does not necessarily forecast future outcomes well. Throughout the project, I test methods against simple baselines and distinguish **associations and scenarios** from evidence that a particular intervention actually works.
 
 ## Headline result
 
 <p align="center"><img src="outputs/figures/09_report/91_national_pieces.png" alt="Figure 1. The four pieces of the national total, in thousand units by 2035 (bar" width="760"></p>
 
-<p align="center"><em>Figure 1. The four pieces of the national total, in thousand units by 2035 (bar: low to high estimate).</em></p>
+<p align="center"><em>Figure 1. Four components of the estimated national total through 2035, shown as low-to-high ranges in thousands of units.</em></p>
 
+| Component | Approach | Units at stake by 2035 |
+|---|---|---:|
+| Growth in affordable housing need | Demographic projection using age-specific renting rates | About 341,000 additional affordable units under the baseline scenario |
+| HOME and HUD-program subsidies lapsing | Logistic regression based on property size and program | 295,000–353,000 units not re-subsidized **if the relevant subsidies lapse**; an upper-bound exposure estimate |
+| LIHTC projects leaving state monitoring lists | Ridge-penalized logistic regression with state effects | 236,000–297,000 units associated with projected monitoring exits |
+| HUD-insured mortgages ending early | Cohort life table | 28,000–42,000 units of potential exposure missed by date-based lists |
+| **Combined planning-scale total** | **Four components combined** | **0.90–1.03 million** |
 
-| Piece | Method | Units at stake by 2035 |
-|---|---|---|
-| Growth in need | Demographic projection with age-specific tenure rates | about 341,000 extra affordable units to hold today's ratio |
-| HOME and HUD-program subsidies lapsing | Logistic regression on property size and program | 295,000 to 353,000 units not rescued (an upper bound) |
-| LIHTC projects leaving the monitoring list | Ridge-penalized logistic regression with state fixed effects | 236,000 to 297,000 units |
-| HUD-insured mortgages ending early | Cohort life table | 28,000 to 42,000 units |
-| **Total** | | **0.90 to 1.03 million** |
+In the baseline result, about two-thirds of the total relates to **existing housing potentially exposed to preservation-related transitions**, rather than additional demand from household growth. The components can overlap, and the combined number is an order-of-magnitude planning estimate—not a verified count of homes that will become unaffordable.
 
-By units, Texas, Florida, and North Carolina lead (growth-driven); California, New York, Pennsylvania, and Ohio lead where subsidies lapse; Maryland, Michigan, and Virginia where LIHTC projects leave monitoring. Per extremely low income renter, Idaho, South Dakota, and Utah are highest.
+The geography also matters. Texas, Florida, and North Carolina stand out in total units, largely because of projected growth. California, New York, Pennsylvania, and Ohio feature prominently in the subsidy-lapse component; Maryland, Michigan, and Virginia in LIHTC monitoring exits. On a per-ELI-renter basis, Idaho, South Dakota, and Utah rank highest.
 
 <p align="center"><img src="outputs/figures/06_combined/61_units_at_stake.png" alt="Figure 2. Units at stake by 2035 for the 15 largest states, by source." width="760"></p>
 
-<p align="center"><em>Figure 2. Units at stake by 2035 for the 15 largest states, by source.</em></p>
-
+<p align="center"><em>Figure 2. The 15 states with the largest modeled number of units at stake, broken down by source of exposure.</em></p>
 
 ## Quick start
 
-**Requirements:** Python 3.12 or newer and [uv](https://docs.astral.sh/uv/getting-started/installation/) (`brew install uv`, or `curl -LsSf https://astral.sh/uv/install.sh | sh`). About 15 MB of data are included; no downloads or API keys are needed.
+You will need **Python 3.12 or newer** and [uv](https://docs.astral.sh/uv/getting-started/installation/). For example, install uv using `brew install uv` or `curl -LsSf https://astral.sh/uv/install.sh | sh`.
+
+The repository includes roughly 15 MB of prepared data, so you can run the included examples without downloading raw source files or obtaining API keys.
 
 ```bash
-cd SUBMISSION            # the folder that contains this README
-uv sync                  # creates .venv and installs the locked dependencies
-uv run examples/04_need_index.py     # first run: prints the highest-need states and how stable the ranking is
+cd SUBMISSION                            # folder containing this README
+uv sync                                  # install the locked dependencies in .venv
+uv run examples/04_need_index.py         # run an example and inspect the state rankings
 ```
 
-**Run everything** (all eighteen notebooks, rebuilt from the cleaned tables in `data/`):
+**Rebuild the report analyses:**
 
 ```bash
-uv run src/run_short_report.py        # about 14 minutes; one line per notebook, "ok" or the error
-uv run src/run_short_report.py all    # also re-runs the six cleaning scripts (needs the raw downloads, see DATA.md)
+uv run src/run_short_report.py           # execute the 18 included notebooks; about 14 minutes
+uv run src/run_short_report.py all       # also rerun six cleaning scripts; requires raw data (see DATA.md)
 ```
 
-**Run one notebook** or **one example:**
+**Run an individual notebook or example:**
 
 ```bash
-uv run src/notebook_tools.py notebooks/05_preservation/01_preservation_model.py   # writes the executed .ipynb next to the .py
+uv run src/notebook_tools.py notebooks/05_preservation/01_preservation_model.py
 uv run examples/06_rescue_model.py
 ```
 
-Run one copy at a time: the notebooks write to `outputs/`. Edit the `.py` file, not the `.ipynb`; the `.ipynb` is regenerated from it on every run.
-
+The notebook tool generates the executed `.ipynb` from its editable `.py` source. **Edit the `.py` file**, not the generated notebook. Run only one rebuilding process at a time because analyses write into the shared `outputs/` directory.
 
 ## How it fits together
 
 <p align="center"><img src="outputs/figures/01_eda/flow-diagram.png" alt="Figure 3. From raw downloads to units at stake by state." width="360"></p>
 
-<p align="center"><em>Figure 3. From raw downloads to units at stake by state.</em></p>
-
-
+<p align="center"><em>Figure 3. The workflow connects raw sources, prepared tables, individual models, state estimates, and planning calculations.</em></p>
 
 ## Data
 
-Every source has a cleaning script that reads `data/raw/` and writes a plain table to `data/interim/` or `data/processed/`, with the reference period of each source preserved. [`DATA.md`](DATA.md) records where each file came from, when, and its quirks.
+I combined sources that describe different parts of the housing system. Each source has its own coverage period, definitions, and limitations. The cleaning scripts read from `data/raw/` and write prepared tables to `data/interim/` or `data/processed/`. [`DATA.md`](DATA.md) documents the sources, reference periods, and known issues.
 
-| Source | Used for | Period |
+| Source | How it is used | Source period |
 |---|---|---|
-| Census ACS 1-year (rent, income, burden, households, vacancy) | The state panel and the rent-burden target | 2010 to 2024, no 2020 release |
-| Census ACS tenure and population by age | Renter rates by age for the demand scenarios | 2010 to 2024 |
-| Weldon Cooper Center population projections | Population by age to 2035 (2035 interpolated) | 2020 to 2050 |
-| HUD CHAS | Extremely low income renters; rent-affordable units | Four 5-year windows, 2005-09 to 2018-22 |
-| National Housing Preservation Database (NHPD) | Subsidy history and expiry dates; the insured-mortgage pathway | Snapshot, October 2026 |
-| HUD LIHTC database | LIHTC projects, placement year, monitoring status | Placed in service 1987 to 2024 |
-| HUD HOME rent limits and fair market rents | County gap between market and restricted rent (tested, no effect) | FY2019 and FY2024 |
-| NLIHC The Gap, state table | Independent benchmark for our state measures (never a model input) | Table as displayed 2026-10-11 |
-| FHFA county house price index | Price appreciation (tested, no effect) | 1975 to 2025 |
+| Census ACS 1-year estimates (rent, income, rent burden, households, vacancy) | State panel and rent-burden outcome | 2010–2024; no 2020 release |
+| Census ACS tenure and population by age | Age-specific renting rates for demand scenarios | 2010–2024 |
+| Weldon Cooper Center population projections | Population by age through 2035; 2035 values interpolated | 2020–2050 |
+| HUD CHAS | Extremely low-income renter counts and rent-affordable units | Four five-year windows, 2005–09 through 2018–22 |
+| National Housing Preservation Database (NHPD) | Subsidy history, expiration dates, and insured mortgages | October 2026 snapshot |
+| HUD LIHTC database | Project placement year and monitoring status | Placed in service 1987–2024 |
+| HUD HOME rent limits and fair market rents | County-level market/restricted rent gap, tested as a potential predictor | FY2019 and FY2024 |
+| NLIHC *The Gap* state table | Independent comparison for state measures; **not** a model input | Table displayed October 11, 2026 |
+| FHFA county house price index | Appreciation measure tested as a potential predictor | 1975–2025 |
 
-
-The cleaned tables share one key (`state_fips`, a two-character string such as `"06"` for California), so any table joins to any other.
+The prepared state-level tables use `state_fips` as a consistent two-character identifier—for example, `"06"` for California—to make geographic joins traceable.
 
 ## Exploratory analysis
 
-Before choosing models, five notebooks (`notebooks/01_eda/`) check what the data can support. Four findings drive the modeling.
+Before fitting models, I used five notebooks in `notebooks/01_eda/` to understand what the data could reasonably tell me. Several findings changed the direction of the project.
 
-1. **Most of the burden is which state you are in** (73.5 percent of the variance), 12.0 percent is common year shocks, and 14.4 percent is left over, a mix of real movement and noise.
-2. **The survey noise is large in small states.** The median 90 percent margin of error is 1.07 points, about 2.8 in Wyoming, Vermont, and Delaware and 0.5 in California and Texas; sampling error alone explains about 76 percent of the variance of year-to-year changes.
-3. **That sets a ceiling.** An oracle that knew every state's true burden would still miss the next published value by 0.61 points against 1.09 for "next year equals this year", so no model can gain more than 44 percent over that benchmark.
-4. **Rankings are stable, changes are not.** States keep their place (rank correlation 0.82 between 2010-12 and 2022-24); the median burden fell to 22.1 percent by 2019, jumped to 25.1 in 2021, and sits at 24.4 in 2024, driven by rent growth.
+1. **States differ substantially.** Approximately 73.5% of the observed variation in severe rent burden is between states, 12.0% reflects common year effects, and 14.4% remains as a mix of movement and noise.
+2. **Year-to-year changes can be misleading.** The median 90% margin of error is about 1.07 percentage points, but roughly 2.8 in Wyoming, Vermont, and Delaware versus about 0.5 in California and Texas. Sampling error accounts for an estimated 76% of the variance in annual changes.
+3. **There is a practical limit to forecast accuracy.** A hypothetical model that perfectly knew the underlying burden rate would still miss a future published survey estimate by about 0.61 points, compared with 1.09 for a persistence baseline. That limits the possible improvement to roughly 44% under the study's assumptions.
+4. **State rankings are more stable than annual movements.** The correlation between state ranks in 2010–12 and 2022–24 is about 0.82. The median state's measured burden fell to 22.1% in 2019, rose to 25.1% in 2021, and was 24.4% in 2024.
+
+These results helped me avoid choosing a sophisticated model simply because it looked impressive. A method needed to improve on a simple, defensible baseline using data from periods it had not seen.
 
 <p align="center"><img src="outputs/figures/01_eda/02_three_states_noise_bands.png" alt="Figure 4. Severe burden with its 90 percent margin of error shaded" width="820"></p>
 
-<p align="center"><em>Figure 4. Severe burden with its 90 percent margin of error shaded: in Wyoming the band is as wide as the swings; in California it is a sliver.</em></p>
+<p align="center"><em>Figure 4. Severe rent burden and 90% survey uncertainty bands. Smaller states can show much wider uncertainty around annual changes.</em></p>
 
 <p align="center"><img src="outputs/figures/01_eda/03_indexed_rent_income.png" alt="Figure 5. Rent and household income in the median state, 2010 = 100" width="640"></p>
 
-<p align="center"><em>Figure 5. Rent and household income in the median state, 2010 = 100: both rose about 62 percent; rent outgrew income in 38 of 51 states.</em></p>
-
+<p align="center"><em>Figure 5. Rent and household income indexed to 2010. Both rose by roughly 62% in the median state, while rent grew faster than income in 38 of 51 geographies.</em></p>
 
 ## Models
 
-Short labels such as "rescue model" name a use of a standard method. The report's Section 2 is the full register of what was tried, with evidence; this table is the part this package contains.
+I tested approaches ranging from simple demographic calculations to statistical learning methods. I retained a method when it answered a clear question and held up to relevant checks—not because it was the most complicated.
 
-| Model (standard name) | What it does | Result |
+| Method | Question it addresses | Main finding |
 |---|---|---|
-| Composite indicator (z-score aggregation) | Scores every state on seven need measures, with rank intervals | Florida, Nevada, California, Arizona, Oregon lead; the top eight ranks are stable |
-| Demographic projection with age-specific tenure rates | Scales renter households by the projected population of each age group; three scenarios | ELI renters 10.9 million (2023) to 11.6 million (2035) in the baseline; the direction depends on whether renting keeps falling |
-| Logistic regression | Chance that a property whose subsidy ended is re-subsidized, from size and program | AUC 0.82 on a time split; one variable (size) does the work |
-| Ridge-penalized logistic regression with state fixed effects and a cohort trend | Chance a LIHTC project leaves the monitoring list | State predicts it (AUC 0.79), the project does not (0.52 across states) |
-| Cohort life table | Insured mortgages that end before their scheduled date | 28,000 to 42,000 units the date-based list misses |
-| Logistic regression with state effects (tests) | Does a market-rent gap, house price growth, or nonprofit sponsor explain outcomes? | No effect, within states or out of sample |
-| Bootstrap with random outcomes (resample, refit, rescore, draw each outcome) | How uncertain is the total, and what does it depend on? | 885,000 to 1.05 million with sampling error; the growth scenario moves it -35 to +29 percent |
-| Hindcast and real-time recalibration tests | Are the totals right, and can a model keep up with the post-2021 rise in rescues? | Totals right to about 1 percent; state differences in rescue shares not explained; no real-time method anticipates the rise |
+| Composite need index (z-score aggregation) | Which states face the greatest need today? | Florida, Nevada, California, Arizona, and Oregon lead; the top eight ranks are stable in resampling. |
+| Demographic projection with age-specific renting rates | How might the number of ELI renter households change? | About 10.9 million in 2023 to 11.6 million by 2035 under the baseline; other renting assumptions change the direction. |
+| Logistic regression | Which properties receive a replacement subsidy after a lapse? | Time-split AUC of 0.82; property size explains much of the observed difference. |
+| Ridge-penalized logistic regression with state effects and cohort trend | Which LIHTC properties leave agency monitoring lists? | State context carries predictive information (AUC about 0.79–0.80); project variables alone perform poorly across states (about 0.52). |
+| Cohort life table | Which insured mortgages end before their scheduled dates? | About 28,000–42,000 units potentially missed by scheduled-expiry lists. |
+| Additional logistic tests with state effects | Do rent gaps, house-price appreciation, or nonprofit sponsorship improve predictions? | No reliable improvement within states or out of sample. |
+| Bootstrap and sensitivity analysis | How uncertain are the combined numbers? | Roughly 885,000–1.05 million with sampling uncertainty; assumptions about renting behavior produce larger changes. |
+| Hindcast and recalibration exercises | Can models reproduce earlier totals or anticipate shifts in rescue rates? | Aggregate hindcast totals are close, but state variation is not well explained and methods did not anticipate the post-2021 rise. |
 
-**Tried in the full study and not included here** (each has a verdict and evidence in the report): fixed-effects panels and the Mundlak test, a Bayesian state-space forecast (0.89 of the persistence error at one year), shrinkage and dynamic-panel forecasts, Elastic Net, random forest, gradient boosting, and SHAP. No machine learning model beat the simple econometric ones in any of 27 cases.
+**Models considered but not distributed in this shorter package:** The full study also evaluates fixed-effects panels, Mundlak tests, Bayesian state-space forecasts, shrinkage and dynamic-panel approaches, Elastic Net, random forest, gradient boosting, and SHAP explanations. The best state-space model achieved about 0.89 of the persistence benchmark's one-year error. Across the reported 27 machine-learning comparisons, none outperformed the simpler econometric alternatives. Those omitted state-level notebooks are discussed in the full study but are **not included** in this repository package.
 
-<p align="center"><img src="outputs/figures/09_report/92_one_year_scorecard.png" alt="Figure 6. Every model tried for the one-year severe-burden forecast, against "next year equals this year" (below 1 is better). Econometric models in blue, machine learning in orange." width="760"></p>
+<p align="center"><img src="outputs/figures/09_report/92_one_year_scorecard.png" alt="Figure 6. One-year severe-burden forecast model scorecard compared with the persistence benchmark." width="760"></p>
 
-<p align="center"><em>Figure 6. Every model tried for the one-year severe-burden forecast, against "next year equals this year" (below 1 is better). Econometric models in blue, machine learning in orange.</em></p>
-
+<p align="center"><em>Figure 6. One-year severe-rent-burden forecasts compared with the “same as last year” benchmark. Scores below 1 indicate improvement.</em></p>
 
 ## Results in pictures
 
+The figures below illustrate distinct questions: **need today, potential future demand, preservation transitions, and planning choices**. They should not be read as interchangeable measures of confirmed affordability loss.
+
 <p align="center"><img src="outputs/figures/01_eda/04_ahni_tile_map.png" alt="Figure 7. Need index by state, 2022-24 (darker means more need). The top eight ranks hold within two places in 99.8 percent of resamples of the survey error." width="720"></p>
 
-<p align="center"><em>Figure 7. Need index by state, 2022-24 (darker means more need). The top eight ranks hold within two places in 99.8 percent of resamples of the survey error.</em></p>
+<p align="center"><em>Figure 7. Current housing-need index by state (2022–24). The top eight states stay within two ranking positions in 99.8% of the survey-error resamples.</em></p>
 
 <p align="center"><img src="outputs/figures/04_scenarios/41_national_scenarios.png" alt="Figure 8. Extremely low income renter households under three scenarios" width="640"></p>
 
-<p align="center"><em>Figure 8. Extremely low income renter households under three scenarios: the spread comes from assumptions about renting, not demographics.</em></p>
+<p align="center"><em>Figure 8. Three scenarios for ELI renter households. Differences mainly reflect renting-behavior assumptions, not separate demographic forecasts.</em></p>
 
 <p align="center"><img src="outputs/figures/05_preservation/51_rescue_by_size.png" alt="Figure 9. Share of properties re-subsidized within three years, by size" width="640"></p>
 
-<p align="center"><em>Figure 9. Share of properties re-subsidized within three years, by size: under 1 percent at ten units or fewer, 28 percent at 200 or more.</em></p>
+<p align="center"><em>Figure 9. Observed re-subsidization within three years, by property size: below 1% for properties with 10 or fewer units and around 28% for those with at least 200 units.</em></p>
 
 <p align="center"><img src="outputs/figures/05_preservation/52_exit_by_state.png" alt="Figure 10. LIHTC projects placed 1993 to 1995 that have left monitoring, by state" width="640"></p>
 
-<p align="center"><em>Figure 10. LIHTC projects placed 1993 to 1995 that have left monitoring, by state: from 0 percent (Connecticut) to 99 percent (Maryland).</em></p>
+<p align="center"><em>Figure 10. The share of 1993–95 LIHTC projects no longer on state monitoring lists varies widely, from 0% in Connecticut to 99% in Maryland. A monitoring exit is not the same as proven affordability loss.</em></p>
 
 <p align="center"><img src="outputs/figures/08_actions/81_lever_grid.png" alt="Figure 11. Affordable units per 100 ELI renters in 2035 under combinations of preservation and new production (2023" width="640"></p>
 
-<p align="center"><em>Figure 11. Affordable units per 100 ELI renters in 2035 under combinations of preservation and new production (2023: 54). Planning arithmetic, no costs.</em></p>
-
+<p align="center"><em>Figure 11. Illustrative 2035 affordable units per 100 ELI renters under different preservation and construction assumptions, compared with about 54 in 2023. These are planning calculations without cost estimates.</em></p>
 
 ## Try it in five minutes
 
-Fourteen short scripts in [`examples/`](examples/) run one model each, print the numbers quoted in the report, and take seconds to a minute. Three to start with:
+The repository has **14 short examples** in [`examples/`](examples/). Each is designed to demonstrate one part of the analysis and print figures that can be compared with the report.
 
 ```bash
-uv run examples/04_need_index.py       # builds the need index and tests its stability
-uv run examples/06_rescue_model.py     # which expiring properties get a new subsidy
-uv run examples/09_units_at_stake.py   # adds the four pieces by state
+uv run examples/04_need_index.py       # build and test the state need rankings
+uv run examples/06_rescue_model.py     # examine which properties receive replacement assistance
+uv run examples/09_units_at_stake.py   # combine the four components by state
 ```
 
-For example, the last one prints (the first lines):
+For example, the combined-results script prints:
 
 ```text
 national total, units by 2035 (low to high):
@@ -180,7 +190,7 @@ national total, units by 2035 (low to high):
   total                                     899,845 to  1,032,975
 ```
 
-To work with the results directly:
+To inspect the leading states:
 
 ```python
 import pandas as pd
@@ -195,98 +205,115 @@ print(t.sort_values("stake_mid", ascending=False)[["state", "stake_low", "stake_
 #      CA    38496.0     46094.0    nhpd
 ```
 
-Or load a cleaned table and the model code from `src/`:
+You can also inspect the property-level events behind the rescue analysis:
 
 ```python
-import sys; sys.path.insert(0, "src")
+import sys
+sys.path.insert(0, "src")
 import preservation as P
 
-events = P.build_events()          # one row per property whose last subsidy ended, 2011 to 2023
-print(len(events), int(events.resub_3y.sum()))     # 12822 events, 189 re-subsidized within three years
+events = P.build_events()  # properties with their last subsidy ending in 2011–2023
+print(len(events), int(events.resub_3y.sum()))  # 12,822 events, 189 re-subsidized within three years
 ```
-
 
 ## Notebooks at a glance
 
-| Notebook | Question | Result |
-    |---|---|---|
-    | `01_eda/01_coverage` | Which data exist for which states and years? | Complete for all 51 states except 2020, 2025, and the CHAS snapshots |
-    | `01_eda/02_signal_vs_noise` | How much of the year-to-year movement in rent burden is real? | About 76 percent of changes is sampling error; this limits any forecast |
-    | `01_eda/03_trends` | How did rent, income, and burden move 2010 to 2024? | Rent and income rose about 62 percent in the median state; burden fell to 2019, jumped in 2021 |
-    | `01_eda/04_need_today_ahni` | Where is need greatest today? | Need index with rank intervals; Florida, Nevada, California, Arizona, Oregon lead |
-    | `01_eda/05_relationships` | What moves with the burden and with rent growth? | Burden change is mostly mean reversion; rent growth has modest predictors |
-    | `04_scenarios/01_stock_flow` | How many more households will need affordable housing? | Scenarios, not forecasts: 10.9 million ELI renters (2023) to 11.6 million (2035) in the baseline |
-    | `05_preservation/01_preservation_model` | Which lapsing HOME and HUD subsidies are rescued? | AUC 0.82 on a time split; forest and boosting do no better |
-    | `05_preservation/02_lihtc_exit` | What happens when the LIHTC clock runs out? | Driven by the state, not the project; AUC 0.80 on a cohort split |
-    | `05_preservation/03_rent_gap`, `06_price_growth` | Does a market incentive, house price growth, or sponsor type explain it? | No (negative results) |
-    | `05_preservation/04_mortgage_exit` | What does the date-based expiry list miss? | 28,000 to 42,000 units of insured mortgages that end early |
-    | `05_preservation/07_state_hindcast`, `08_rescue_drift` | Does the rescue model get the totals right, and what if the post-2021 rescue rate persists? | Totals right to about 1 percent; state rescue shares not explained; no real-time method anticipates the rise; if it persists the total is about 5 percent lower |
-| `06_combined/01_units_at_stake` | How big is the task, by state? | 0.90 to 1.03 million units by 2035 |
-| `06_combined/02_uncertainty_and_sensitivity` | How sure are we of the total? | 885,000 to 1.05 million with sampling error; the growth scenario moves it -35 to +29 percent |
-| `06_combined/03_external_benchmarks` | Do we agree with independent figures? | State measures agree with NLIHC (r 0.995 and 0.75); published expiring counts fall inside or near ours |
-    | `07_homelessness/01_ahar_context` | Context from the homelessness count | Descriptive only; annual changes are not explained by rents |
-    | `08_actions/01_what_can_be_done` | What could be done? | Planning arithmetic: targeting trade-off, capacity, and levers |
-    
+The 18 notebooks included in this package can be read individually or rebuilt using the runner.
+
+| Notebook | Research question | Reported result |
+|---|---|---|
+| `01_eda/01_coverage` | Which states and periods are represented? | Broad coverage of 51 geographies; gaps include ACS 2020 and selected snapshot sources. |
+| `01_eda/02_signal_vs_noise` | How much apparent movement in burden is sampling noise? | Approximately 76% of annual-change variance. |
+| `01_eda/03_trends` | How did rent, income, and burden change? | Median-state rents and income rose about 62%; burden fell through 2019 and rose in 2021. |
+| `01_eda/04_need_today_ahni` | Which states face the greatest need today? | Need index with rank uncertainty; Florida, Nevada, California, Arizona, and Oregon lead. |
+| `01_eda/05_relationships` | What correlates with rent growth and burden changes? | Burden change is dominated by mean reversion; rent growth has modest predictors. |
+| `04_scenarios/01_stock_flow` | How might ELI renter numbers evolve? | About 10.9 million in 2023 to 11.6 million in 2035 in the baseline scenario. |
+| `05_preservation/01_preservation_model` | Which lapsed subsidies are followed by another subsidy? | AUC 0.82 on a time split; forest and boosting do not improve on the simpler model. |
+| `05_preservation/02_lihtc_exit` | Which LIHTC projects leave agency monitoring? | State patterns are important; cohort-split AUC about 0.80. |
+| `05_preservation/03_rent_gap`, `05_preservation/06_price_growth` | Do market incentives and sponsor characteristics add explanatory value? | No reliable improvement in the reported tests. |
+| `05_preservation/04_mortgage_exit` | What might scheduled-expiration lists miss? | About 28,000–42,000 units connected with early insured-mortgage terminations. |
+| `05_preservation/07_state_hindcast`, `05_preservation/08_rescue_drift` | Can the model reproduce previous totals and adapt to new patterns? | Aggregate totals are close, but state shares remain difficult and the recent rise was not anticipated. |
+| `06_combined/01_units_at_stake` | How many units are potentially at stake by state? | About 0.90–1.03 million nationally. |
+| `06_combined/02_uncertainty_and_sensitivity` | How sensitive is the total? | Approximately 885,000–1.05 million with sampling uncertainty; demand assumptions have larger effects. |
+| `06_combined/03_external_benchmarks` | How do estimates compare with independent data? | ELI renter counts correlate with NLIHC's table at 0.995; housing-availability rank correlation about 0.75. |
+| `07_homelessness/01_ahar_context` | How does homelessness fit into the broader picture? | Descriptive context; no claim that annual changes are explained by rents. |
+| `08_actions/01_what_can_be_done` | What would different preservation and production combinations imply? | Screening trade-offs and capacity arithmetic, without costs or causal claims. |
+
 ## Repository layout
 
 ```text
-REPORT_SHORT.md        the full write-up: code, output, and figures (also exported as report_short.pdf)
-README.md              this file
-DATA.md                where each source came from, its reference period, its quirks
-examples/              fourteen runnable scripts, one per model
-notebooks/             eighteen notebooks: .py source (edit this) and executed .ipynb
-  01_eda/  04_scenarios/  05_preservation/  06_combined/  07_homelessness/  08_actions/
-src/                   model code (ahni, scenarios, preservation, lihtc_exit, mortgage_exit,
-                       combined, actions), helpers, six cleaners, and run_short_report.py
-data/interim/          cleaned tables (the notebooks read these)
-data/processed/        the state-year panel and its dictionary
-data/raw/chas/         two small raw HUD tables read directly by one notebook
-outputs/tables/        result tables written by the notebooks
-outputs/figures/       figures, grouped by part
-fetch-*.py             API download scripts (need a free Census key)
-pyproject.toml, uv.lock   locked dependencies
+REPORT_SHORT.md          Full research write-up, with code, output and figures
+README.md                This introduction
+DATA.md                  Source locations, periods and known limitations
+examples/                14 runnable model examples
+notebooks/               18 included notebooks: editable .py plus executed .ipynb
+  01_eda/
+  04_scenarios/
+  05_preservation/
+  06_combined/
+  07_homelessness/
+  08_actions/
+src/                     Models, shared helpers, six cleaners and report runner
+data/interim/             Prepared input tables
+data/processed/           State-year panel and dictionary
+data/raw/chas/            Two smaller raw HUD CHAS tables
+outputs/tables/          Tables generated by the analyses
+outputs/figures/         Figures grouped by research section
+fetch-*.py               API download scripts; a free Census key may be needed
+pyproject.toml, uv.lock   Dependency definition and lockfile
 ```
 
-Notebook numbers keep the full project's numbering, so the gaps (no `02_econometrics` or `03_ml_bakeoff`) are parts of the full study that this package leaves out; the Models section above says which.
-
+The numbering follows the larger research study. In particular, the state forecasting and machine-learning bake-off sections (`02_econometrics` and `03_ml_bakeoff`) are **not part of this shorter repository package**. The report discusses their findings, while this package concentrates on the workflows used for the combined exposure estimate.
 
 ## What this package leaves out, and why
 
-| Not included | What it was | Why it is out |
-    |---|---|---|
-    | State-level forecasts (Bayesian state-space, fixed-effects and shrinkage models) | One to three year forecasts of state rent burden and rent growth | They work modestly (0.89 of "same as last year" at one year; noise caps the gain) and the combined result does not use them |
-    | Machine-learning bake-off and SHAP for state forecasts | Elastic Net, random forest, boosting against the econometric models | None of 27 cases beat the simple models; the rescue notebook keeps the comparison at property level |
-    | Explanatory econometrics | Fixed effects, dynamics, cross-state dependence | Context for the full study, not needed for the combined result |
-    | Richer-feature check and policy-flag profiles | Tract context, location, extra NHPD fields; five yes/no flags by state | No gain, and superseded by the combined estimate |
-    | Raw downloads (about 280 MB) | NHPD, LIHTC, CHAS, rent limits, and others | Size; cleaned tables are included and `DATA.md` says how to re-download |
-    
+| Not included | What it covered | Reason it is omitted |
+|---|---|---|
+| State-level Bayesian state-space, fixed-effects, and shrinkage forecasting notebooks | One- to three-year state rent-burden and rent-growth forecasts | Modest performance gains; these forecasts are not used in the combined 2035 estimate. |
+| State forecasting machine-learning bake-off and SHAP notebooks | Elastic Net, forests, boosting, and explainability comparisons | None of the reported 27 comparisons improved on simpler models; property-level comparisons remain in the included preservation notebook. |
+| Expanded explanatory econometrics | Fixed effects, dynamic relationships and cross-state dependence | Helpful research context, but not required to rebuild the combined estimate. |
+| Additional property features and policy-flag profiles | Tract data, extra NHPD fields and five state-level yes/no flags | No demonstrated predictive gain or superseded by the combined approach. |
+| Approximately 280 MB of raw downloads | NHPD, LIHTC, CHAS, rent limits and related source files | Repository size; prepared tables are included and [`DATA.md`](DATA.md) explains how to obtain sources. |
+
 ## Reproducibility and checks
 
-- **Raw data is immutable.** Cleaning scripts only read `data/raw/` and write elsewhere; every script can be rerun.
-- **Uncertainty is quantified, not asserted.** The headline range is also run through 1,000 resamples of the training data; the growth assumption moves the total by -35 to +29 percent, the largest modeling choice (the rescue rate staying at its post-2021 level) by 5 percent and the rest by 3 percent or less (`notebooks/06_combined/02_uncertainty_and_sensitivity`).
-- **External benchmarks.** Our state measures agree with NLIHC's independently built Gap table (ELI renter households r = 0.995; homes per 100 rank r = 0.75) and published expiring-unit counts fall inside or near ours (`notebooks/06_combined/03_external_benchmarks`).
-- **Every example reproduces the number it is quoted for** in the report (for example the LIHTC projection of 235,693 to 296,639 units and the total of 899,845 to 1,032,975).
-- **Forecast tests never use random splits.** Models are fitted only on what was known at the time, judged against persistence, and every result is also shown without 2021 and without 2021 to 2023.
-- **Leakage was hunted and fixed:** a later subsidy leaked into the first rescue features (AUC 0.999), extra NHPD fields turned out to record the outcome (AUC 0.94 from "is it filled in" flags), and two rent-gap results were artifacts of a poor county match and of mixing two rent-limit vintages. The report describes each.
-- **Seeds are fixed** for resampling and sampling steps, so reruns reproduce the tables to rounding noise.
+A central goal of the project is to make the results **inspectable**, including decisions that did not work as expected.
 
+- **Source preservation.** Cleaning scripts read from `data/raw/` and write new prepared files rather than modifying the source downloads.
+- **Rebuildable examples.** The included examples and prepared tables let readers check reported values, including the LIHTC estimate of 235,693–296,639 units and the combined 899,845–1,032,975-unit range.
+- **Time-aware evaluation.** Forecasting and property models use historical-to-later splits where relevant, rather than randomly mixing future observations into training data.
+- **Explicit uncertainty.** The combined estimate is examined through 1,000 resamples, while separate sensitivity analyses show how assumptions about renter demand and rescue patterns affect the total.
+- **Independent benchmarks.** State measures are compared against NLIHC's *The Gap* table and published expiring-unit figures, with source and definition differences discussed.
+- **Corrections to data leakage.** I identified and removed cases where later subsidy information or outcome-related fields made a model appear unrealistically strong (including apparent AUC values of 0.999 and 0.94). Rent-gap comparisons were also corrected for a weak county join and mixed source years.
+- **Repeatable random procedures.** Where simulations or resampling require randomness, fixed seeds allow results to be recreated within ordinary numerical tolerances.
+
+**Scope of reproducibility:** This repository supports the **included** 18-notebook workflow using the prepared data. A full source-cleaning rerun requires the raw downloads. The omitted state-level forecasting notebooks cannot be reproduced from this shorter package alone.
 
 ## Limits
 
-A table of the questions a reviewer could raise, what was done about each, and what remains is in the report (Section 8, Threats to validity).
+The report's Section 8 provides a fuller discussion of threats to validity. The most important cautions are:
 
-- The scenarios are conditional on a population projection that extends 2010-2025 growth trends and on renter behavior; they are not forecasts, and 2035 is interpolated.
-- The rescue model is conditional on a lapse, so its total is an upper bound on loss; it has 58 rescued events in training and covers HOME and HUD-program subsidies (41 percent of expiring units). A 2019-2023 hindcast shows its totals are right in aggregate but that it does not explain differences in rescue shares between states, and the rescue rate rose after 2021 (no real-time model anticipated it; if the higher rate persists the total is about 5 percent lower).
-- The LIHTC outcome is leaving the monitoring list, not losing affordability, and the state effect mixes policy and reporting practice.
-- The combined total is an order of magnitude: pieces can overlap, and sampling error is small next to the choice of growth scenario, which moves the total by about a third either way.
-- Everything here is association. The planning arithmetic has no costs and assumes an action succeeds.
+- **Scenarios, not forecasts.** The 2035 demand figures depend on projected population and assumptions about renting behavior. The 2035 demographic values are interpolated.
+- **Subsidy exposure, not confirmed loss.** The rescue estimate assumes the relevant subsidy actually lapses. The rescue model is based on relatively few observed positive rescue outcomes (58 in training) and covers approximately 41% of expiring units. It is therefore not a comprehensive estimate of all future affordability losses.
+- **Changing rescue patterns.** A 2019–2023 hindcast performs reasonably in aggregate but does not explain state-level rescue differences. The observed rescue rate rose after 2021; if that higher rate persisted, the combined estimate would be about 5% lower.
+- **LIHTC monitoring is administrative.** A project leaving a state monitoring list may remain affordable. State effects may reflect agency reporting practices as well as substantive program differences.
+- **Overlaps and model choices matter.** The four exposure categories may refer to some of the same homes. Sampling error is relatively small compared with changes caused by the assumptions about future renting behavior.
+- **No demonstrated intervention effect.** The project identifies associations and illustrates planning trade-offs. It does not establish that a specific preservation action causes units to remain affordable, nor does it estimate intervention costs or returns.
+
+I include these limitations because they affect how the numbers should be used. This project is intended to support **better questions and more informed review**, not replace property-level due diligence or local policy analysis.
 
 ## Next steps
 
-1. Dated LIHTC exits and extended-use periods from state agencies, to support survival (hazard) models.
-2. As-of-event owner, manager, and inspection history, to test for-profit against nonprofit ownership without survivorship bias.
-3. Causal designs where state policy varies over time (for example difference-in-differences on qualified-contract rules), which needs dated policy data.
-4. An availability-adjusted affordable-unit gap (CHAS Table 14B) to match the standard national measure.
-5. A refresh with 2025 data, and cost data for an investment index kept separate from need.
+I see this as an evolving research effort, not a finished answer. As better data become available and I learn more about affordable housing finance and preservation, I want to keep testing and improving the analysis.
 
-Data providers: U.S. Census Bureau, HUD, the National Low Income Housing Coalition and Public and Affordable Housing Research Corporation (NHPD), the Weldon Cooper Center, BLS, BEA, and FHFA.
+1. **Track LIHTC outcomes more precisely.** Obtain dated monitoring exits and extended-use restriction information from state agencies so that future work can distinguish administrative changes from confirmed affordability outcomes.
+2. **Improve property-level history.** Incorporate ownership, management, and inspection information available as of each historical event to avoid using later information to predict earlier outcomes.
+3. **Explore policy effects cautiously.** Where dated policy changes are available, evaluate whether designs such as difference-in-differences can help distinguish policy effects from correlations.
+4. **Refine the housing gap measure.** Incorporate an availability-adjusted measure using CHAS Table 14B to align more closely with the standard national housing-gap concept.
+5. **Refresh and extend the research.** Update datasets as releases permit, compare estimates against subsequent observations, and explore costs and finance risks in a **separate** investment-oriented framework rather than blending them into the need index.
+
+My longer-term goal is to make this work useful beyond any one organization by sharing transparent methods and research that affordable housing developers, investors, housing agencies, and other researchers can examine, challenge, and improve.
+
+---
+
+**Data and reference organizations:** U.S. Census Bureau; U.S. Department of Housing and Urban Development (HUD); National Low Income Housing Coalition (NLIHC); Public and Affordable Housing Research Corporation / National Housing Preservation Database (NHPD); Weldon Cooper Center; Bureau of Labor Statistics (BLS); Bureau of Economic Analysis (BEA); Federal Housing Finance Agency (FHFA).
